@@ -3,6 +3,9 @@ const app = express();
 const chalk = require('chalk');
 var request = require('request');
 var nunjucks = require('nunjucks');
+
+const routes = require('./routes');
+
 const PORT = 8016;
 
 nunjucks.configure('views', {
@@ -10,6 +13,16 @@ nunjucks.configure('views', {
   express: app,
   noCache: true
 });
+
+// // manually-written static file middleware
+// app.use(function(req, res, next) {
+//   var mimeType = mime.lookup(req.path);
+//   fs.readFile('./public' + req.path, function(err, fileBuffer) {
+//     if (err) return next();
+//     res.header('Content-Type', mimeType);
+//     res.send(fileBuffer);
+//   });
+// });
 
 app.set('view engine', 'html');
 
@@ -21,19 +34,28 @@ var locals = {
 const people = [{ name: 'Full' }, { name: 'Stacker' }, { name: 'Son' }];
 
 app.use(function(req, res, next) {
-  request('http:localhost:8016', function(error, response, body) {
-    console.log(chalk.green(req.method, req.url, res && res.statusCode));
-  });
+  if (res.headersSent) {
+    console.log(chalk.green(req.method, req.url, res.statusCode));
+  } else {
+    res.on('finish', function() {
+      console.log(chalk.green(req.method, req.url, res.statusCode));
+    });
+  }
   next();
 });
 
-app.get('/', function(req, res) {
-  res.render('index', { title: 'Hall of Fame', people: people });
+app.use('/stylesheets/style.css', function(req, res, next) {
+  if (res.headersSent) {
+    console.log('You hit the ' + req.url + '!');
+  } else {
+    res.on('finish', function() {
+      console.log('You hit the ' + req.url + '!');
+    });
+  }
+  next();
 });
 
-app.get('/news', function(req, res) {
-  res.send('<h1>Hitting the news route</h1>');
-});
+app.use('/', routes);
 
 app.listen(PORT, function() {
   console.log('Server listening on ' + PORT + '!');
