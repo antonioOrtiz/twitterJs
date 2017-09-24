@@ -4,6 +4,23 @@ body {
   /* The html and body elements cannot have any padding or margin. */
 }
 
+ul {
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+  -webkit-margin-start: 0;
+  -webkit-margin-end: 0;
+  -webkit-padding-start: 0;
+}
+
+li {
+  margin-top: 10px;
+  list-style-type: none;
+}
+li > .name {
+  font-weight: bold;
+}
+/* Wrapper for page content to push down footer */
+
 /* Wrapper for page content to push down footer */
 #wrap {
   min-height: 100%;
@@ -42,6 +59,7 @@ code {
 
 .tweetbox {
   padding: 7px;
+  margin-bottom: 50px;
 }
 
 .tweetbox img {

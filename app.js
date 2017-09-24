@@ -26,12 +26,7 @@ nunjucks.configure('views', {
 
 app.set('view engine', 'html');
 
-var locals = {
-  title: 'An Example',
-  people: [{ name: 'Gandalf' }, { name: 'Frodo' }, { name: 'Hermione' }]
-};
-
-const people = [{ name: 'Full' }, { name: 'Stacker' }, { name: 'Son' }];
+app.use(express.static('public'));
 
 app.use(function(req, res, next) {
   if (res.headersSent) {
@@ -44,16 +39,16 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use('/stylesheets/style.css', function(req, res, next) {
-  if (res.headersSent) {
-    console.log('You hit the ' + req.url + '!');
-  } else {
-    res.on('finish', function() {
-      console.log('You hit the ' + req.url + '!');
-    });
-  }
-  next();
-});
+// app.use('/stylesheets/style.css', function(req, res, next) {
+//   if (res.headersSent) {
+//     console.log('You hit the ' + req.url + '!');
+//   } else {
+//     res.on('finish', function() {
+//       console.log('You hit the ' + req.url + '!');
+//     });
+//   }
+//   next();
+// });
 
 app.use('/', routes);
 
