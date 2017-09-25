@@ -3,27 +3,36 @@
     <h1>Welcome to Twitter.js!</h1>
 </div>
 <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-3">
+    <div class="col-xs-12 col-sm-12 col-md-2">
         <img src="https://pbs.twimg.com/profile_images/2450268678/olxp11gnt09no2y2wpsh_normal.jpeg">
         <br>
         <br>
         <b>Your Name</b>
         <br> 100 followers
+        <!-- DISPLAYS THE TWEET LOG -->
+      {% if showForm %}
+        <form action="/tweets" method="POST">
+          <label for="name_field">Name:</label>
+          <input name="name" type="text" id="name_field" value="{{username.name}}" />
+
+          <label for="text_field">Text:</label>
+          <input name="text" type="text" id="text_field" value="IM UR PRESIDENT" />
+
+          <input class="btn "type="submit" value="Submit" />
+        </form>
+      {% endif %}
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-9">
+    <div class="col-xs-12 col-sm-12 col-md-8">
         <!-- display tweets here -->
         {% for tweet in tweets %}
         <div class="tweetbox">
-            <img src="" alt="">
+            <img>
             <div class="content">
-
-                <p class="by">{{tweet.name}}</p>
-                <p>{{tweet.content}}</p>
-
+                <p class="by"><a href="/users/{{tweet.name}}">{{tweet.name}}</a></p>
+                <p><a href="/tweets/{{tweet.id}}">{{tweet.content}}</a></p>
             </div>
         </div>
         {% endfor %}
-
     </div>
 </div>
 {% endblock %}

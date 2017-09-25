@@ -3,6 +3,7 @@ const app = express();
 const chalk = require('chalk');
 var request = require('request');
 var nunjucks = require('nunjucks');
+var bodyParser = require('body-parser');
 
 const routes = require('./routes');
 
@@ -49,6 +50,12 @@ app.use(function(req, res, next) {
 //   }
 //   next();
 // });
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+app.use(bodyParser.json());
 
 app.use('/', routes);
 
